@@ -20,6 +20,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import type { StatusForm } from "@/utils/statusForm.types";
 import { registerActions } from "@/actions/register";
+import { Spinner } from "../spinner";
 
 export const RegisterForm = () => {
   const [statusMessage, setStatusMessage] = useState<StatusForm>({
@@ -115,8 +116,13 @@ export const RegisterForm = () => {
             ))}
 
           <Button className="w-full" type="submit">
-            {isPending && <CgSpinner className="animate-spin h-5 w-5 mr-3" />}
-            criar usuário
+            {isPending && <Spinner text="Carregando" />}
+            <span
+              data-visible={isPending}
+              className="data-[visible=true]:hidden block "
+            >
+              criar usuário
+            </span>
           </Button>
         </form>
       </Form>
