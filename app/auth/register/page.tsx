@@ -1,4 +1,4 @@
-import { RegisterForm } from "@/components/auth/register-form";
+import { RegisterForm } from "@/components/auth/forms";
 import React from "react";
 
 export default function RegisterPage() {

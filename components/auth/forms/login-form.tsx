@@ -2,72 +2,54 @@
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { CardLogin } from "@/components/auth/card-login";
+import { LoginSchema, type LoginSchemaProps } from "@/schema";
 
+import { loginActions } from "@/actions/login";
+import type { StatusForm } from "@/utils/statusForm.types";
+import { FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { BackButton } from "../back-button";
+import { CgSpinner } from "react-icons/cg";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { RegisterSchema, type RegisterSchemaProps } from "@/schema";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
-import type { StatusForm } from "@/utils/statusForm.types";
-import { registerActions } from "@/actions/register";
-import { Spinner } from "../spinner";
-import { CardLogin } from "@/components/auth/card-login";
-import { BackButton } from "./back-button";
 
-export const RegisterForm = () => {
+export const LoginForm = () => {
   const [statusMessage, setStatusMessage] = useState<StatusForm>({
     status: null,
   });
   const [isPending, startTransition] = useTransition();
-  const form = useForm<RegisterSchemaProps>({
-    resolver: zodResolver(RegisterSchema),
+  const form = useForm<LoginSchemaProps>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: RegisterSchemaProps) => {
+  const onSubmit = (values: LoginSchemaProps) => {
     startTransition(() => {
-      registerActions(values).then((data) => setStatusMessage(data));
+      loginActions(values).then((data) => setStatusMessage(data));
     });
   };
 
   return (
     <CardLogin.Root>
-      <CardLogin.Header title="Autenticação" subText="Criar nova conta" />
+      <CardLogin.Header title="Autenticação" subText="teste" />
       <CardLogin.Content>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nome</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="nome"
-                        type="text"
-                        disabled={isPending}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="email"
@@ -114,21 +96,22 @@ export const RegisterForm = () => {
               ))}
 
             <Button className="w-full" type="submit">
-              {isPending && <Spinner text="Carregando" />}
-              <span
-                data-visible={isPending}
-                className="data-[visible=true]:hidden block "
-              >
-                criar usuário
-              </span>
+              {isPending && <CgSpinner className="animate-spin h-5 w-5 mr-3" />}
+              Login
             </Button>
           </form>
         </Form>
       </CardLogin.Content>
       <CardLogin.Footer>
+        <CardLogin.Social>
+          <CardLogin.SocialButton icon={FcGoogle} />
+          <CardLogin.SocialButton icon={FaGithub} />
+        </CardLogin.Social>
+      </CardLogin.Footer>
+      <CardLogin.Footer>
         <BackButton
-          label="Você já tem conta? Faça o login"
-          href="/auth/login"
+          label="Você ainda não tem conta? Clique aqui"
+          href="/auth/register"
         />
       </CardLogin.Footer>
     </CardLogin.Root>
