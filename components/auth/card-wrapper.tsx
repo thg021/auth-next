@@ -1,5 +1,5 @@
 "use client";
-
+// TODO: Remover este componente
 import type React from "react";
 import {
   Card,

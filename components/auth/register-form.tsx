@@ -2,8 +2,6 @@
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { CardWrapper } from "./card-wrapper";
-import { CgSpinner } from "react-icons/cg";
 
 import {
   Form,
@@ -21,6 +19,8 @@ import { FormSuccess } from "@/components/form-success";
 import type { StatusForm } from "@/utils/statusForm.types";
 import { registerActions } from "@/actions/register";
 import { Spinner } from "../spinner";
+import { CardLogin } from "@/components/auth/card-login";
+import { BackButton } from "./back-button";
 
 export const RegisterForm = () => {
   const [statusMessage, setStatusMessage] = useState<StatusForm>({
@@ -43,89 +43,94 @@ export const RegisterForm = () => {
   };
 
   return (
-    <CardWrapper
-      headerLabel="Criar uma conta"
-      backButtonLabel="Você já tem conta? Faça o login"
-      backButtonHref="/auth/login"
-    >
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="nome"
-                      type="text"
-                      disabled={isPending}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <CardLogin.Root>
+      <CardLogin.Header title="Autenticação" subText="Criar nova conta" />
+      <CardLogin.Content>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="nome"
+                        type="text"
+                        disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="email@mail.com"
-                      type="email"
-                      disabled={isPending}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="email@mail.com"
+                        type="email"
+                        disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Senha</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="********"
-                      type="password"
-                      disabled={isPending}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          {statusMessage &&
-            (statusMessage.status === "error" ? (
-              <FormError message={statusMessage.message} />
-            ) : (
-              <FormSuccess message={statusMessage.message} />
-            ))}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Senha</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="********"
+                        type="password"
+                        disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {statusMessage &&
+              (statusMessage.status === "error" ? (
+                <FormError message={statusMessage.message} />
+              ) : (
+                <FormSuccess message={statusMessage.message} />
+              ))}
 
-          <Button className="w-full" type="submit">
-            {isPending && <Spinner text="Carregando" />}
-            <span
-              data-visible={isPending}
-              className="data-[visible=true]:hidden block "
-            >
-              criar usuário
-            </span>
-          </Button>
-        </form>
-      </Form>
-    </CardWrapper>
+            <Button className="w-full" type="submit">
+              {isPending && <Spinner text="Carregando" />}
+              <span
+                data-visible={isPending}
+                className="data-[visible=true]:hidden block "
+              >
+                criar usuário
+              </span>
+            </Button>
+          </form>
+        </Form>
+      </CardLogin.Content>
+      <CardLogin.Footer>
+        <BackButton
+          label="Você já tem conta? Faça o login"
+          href="/auth/login"
+        />
+      </CardLogin.Footer>
+    </CardLogin.Root>
   );
 };
