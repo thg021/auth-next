@@ -39,7 +39,10 @@ export const LoginForm = () => {
 
   const onSubmit = (values: LoginSchemaProps) => {
     startTransition(() => {
-      loginActions(values).then((data) => setStatusMessage(data));
+      loginActions(values).then((data) => {
+        setStatusMessage(data);
+        //TODO: implementar 2FA
+      });
     });
   };
 
@@ -104,8 +107,8 @@ export const LoginForm = () => {
       </CardLogin.Content>
       <CardLogin.Footer>
         <CardLogin.Social>
-          <CardLogin.SocialButton icon={FcGoogle} />
-          <CardLogin.SocialButton icon={FaGithub} />
+          <CardLogin.SocialButton icon={FcGoogle} provider="google" />
+          {/* <CardLogin.SocialButton icon={FaGithub} provider="github" /> */}
         </CardLogin.Social>
       </CardLogin.Footer>
       <CardLogin.Footer>

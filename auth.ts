@@ -6,16 +6,34 @@ import { getUserById } from "@/services/user";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   debug: true,
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/error",
+  },
+  events: {
+    async linkAccount({ user }) {
+      console.log("Event", user);
+      await db.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() },
+      });
+    },
+  },
   callbacks: {
-    async signIn({ user }) {
+    async signIn({ user, account }) {
+      // const oauthProviders = ["github", "google"];
+      const isOAuthProvider =
+        account && ["github", "google"].includes(account.provider);
+      if (isOAuthProvider) return false;
+
       const existingUser = await getUserById(user.id!);
+
       if (!existingUser || !existingUser.emailVerified) {
         return false;
       }
       return true;
     },
     async session({ token, session }) {
-      console.log({ sessionToken: token }, session);
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }
