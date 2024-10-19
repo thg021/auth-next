@@ -21,16 +21,13 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   },
   callbacks: {
     async signIn({ user, account }) {
-      // const oauthProviders = ["github", "google"];
-      const isOAuthProvider =
-        account && ["github", "google"].includes(account.provider);
-      if (isOAuthProvider) return false;
+      if (account?.provider !== "credentials") return true;
 
       const existingUser = await getUserById(user.id!);
 
-      if (!existingUser || !existingUser.emailVerified) {
-        return false;
-      }
+      if (!existingUser || !existingUser.emailVerified) return false;
+
+      // TODO: check 2FA here
       return true;
     },
     async session({ token, session }) {

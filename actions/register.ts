@@ -5,6 +5,8 @@ import type { StatusForm } from "@/utils/statusForm.types";
 import bcrypt from "bcrypt";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/services/user";
+import { generateVerificationToken } from "@/lib/tokens";
+import { sendVerificationEmail } from "@/lib/mail";
 export const registerActions = async (
   values: RegisterSchemaProps
 ): Promise<StatusForm> => {
@@ -27,5 +29,8 @@ export const registerActions = async (
     data: { email, password: hashedPassword, name },
   });
 
-  return { status: "success", message: "Usuário criado com sucesso!" };
+  const verificationToken = await generateVerificationToken(email);
+  await sendVerificationEmail(verificationToken.email, verificationToken.token);
+
+  return { status: "success", message: "Email de confirmação foi enviado." };
 };
