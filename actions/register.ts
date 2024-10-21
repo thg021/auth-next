@@ -2,11 +2,11 @@
 
 import { RegisterSchema, type RegisterSchemaProps } from "@/schema";
 import type { StatusForm } from "@/utils/statusForm.types";
-import bcrypt from "bcrypt";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/services/user";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
+import { hashPassword } from "@/utils/hashPassword";
 export const registerActions = async (
   values: RegisterSchemaProps
 ): Promise<StatusForm> => {
@@ -18,7 +18,7 @@ export const registerActions = async (
 
   const { email, password, name } = validatedFields.data;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await hashPassword(password);
 
   const existingUser = await getUserByEmail(email);
   if (existingUser) {

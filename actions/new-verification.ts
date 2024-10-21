@@ -15,7 +15,6 @@ export const newVerification = async (token: string) => {
     }
 
     const hasExpired = new Date(existingToken.expires) > new Date();
-    console.log(existingToken.expires, new Date());
     if (!hasExpired) {
       return "expired";
     }
@@ -30,7 +29,6 @@ export const newVerification = async (token: string) => {
       data: { emailVerified: new Date() },
     });
 
-    console.log("delete", existingToken);
     await db.verificationToken.delete({
       where: { id: existingToken.id },
     });

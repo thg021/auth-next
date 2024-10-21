@@ -3,12 +3,10 @@ import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CardLogin } from "@/components/auth/card-login";
-import { LoginSchema, type LoginSchemaProps } from "@/schema";
+import { ResetSchema, type ResetSchemaProps } from "@/schema";
 
-import { loginActions } from "@/actions/login";
 import type { StatusForm } from "@/utils/statusForm.types";
-//import { FaGithub } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BackButton } from "../back-button";
@@ -23,39 +21,32 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { useSearchParams } from "next/navigation";
-import { FormTokenValidation } from "@/components/form-token-validation";
-import Link from "next/link";
+import { resetActions } from "@/actions/reset";
 
-type TokenStatus = "invalid" | "valid" | "error" | null;
-export const LoginForm = () => {
+export const ResetForm = () => {
   const [statusMessage, setStatusMessage] = useState<StatusForm>({
     status: null,
   });
   const [isPending, startTransition] = useTransition();
-  const searchParams = useSearchParams();
-  const isTokenVerified = searchParams.get("isTokenVerified");
 
-  const form = useForm<LoginSchemaProps>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<ResetSchemaProps>({
+    resolver: zodResolver(ResetSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
-  const onSubmit = (values: LoginSchemaProps) => {
+  const onSubmit = (values: ResetSchemaProps) => {
     startTransition(() => {
-      loginActions(values).then((data) => {
+      resetActions(values).then((data) => {
         setStatusMessage(data);
-        //TODO: implementar 2FA
       });
     });
   };
 
   return (
     <CardLogin.Root>
-      <CardLogin.Header title="Autenticação" subText="teste" />
+      <CardLogin.Header title="Autenticação" subText="Solicitar nova senha" />
       <CardLogin.Content>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -79,35 +70,7 @@ export const LoginForm = () => {
                     </FormItem>
                   )}
                 />
-
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Senha</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="********"
-                          type="password"
-                          disabled={isPending}
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </div>
-              <Button
-                asChild
-                variant="link"
-                size="sm"
-                className="px-0 self-end"
-              >
-                <Link href="/auth/reset">esqueceu sua senha?</Link>
-              </Button>
             </div>
             {statusMessage &&
               (statusMessage.status === "error" ? (
@@ -116,27 +79,15 @@ export const LoginForm = () => {
                 <FormSuccess message={statusMessage.message} />
               ))}
 
-            {isTokenVerified && (
-              <FormTokenValidation status={isTokenVerified as TokenStatus} />
-            )}
             <Button className="w-full" type="submit">
               {isPending && <CgSpinner className="animate-spin h-5 w-5 mr-3" />}
-              Login
+              Enviar e-mail
             </Button>
           </form>
         </Form>
       </CardLogin.Content>
       <CardLogin.Footer>
-        <CardLogin.Social>
-          <CardLogin.SocialButton icon={FcGoogle} provider="google" />
-          {/* <CardLogin.SocialButton icon={FaGithub} provider="github" /> */}
-        </CardLogin.Social>
-      </CardLogin.Footer>
-      <CardLogin.Footer>
-        <BackButton
-          label="Você ainda não tem conta? Clique aqui"
-          href="/auth/register"
-        />
+        <BackButton label="Voltar ao login" href="/auth/login" />
       </CardLogin.Footer>
     </CardLogin.Root>
   );
