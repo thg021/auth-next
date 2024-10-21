@@ -7,7 +7,7 @@ import { LoginSchema, type LoginSchemaProps } from "@/schema";
 
 import { loginActions } from "@/actions/login";
 import type { StatusForm } from "@/utils/statusForm.types";
-import { FaGithub } from "react-icons/fa";
+//import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,7 +33,7 @@ export const LoginForm = () => {
   });
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
-  const isTokenVerified: TokenStatus = searchParams.get("isTokenVerified");
+  const isTokenVerified = searchParams.get("isTokenVerified");
 
   const form = useForm<LoginSchemaProps>({
     resolver: zodResolver(LoginSchema),
@@ -105,7 +105,7 @@ export const LoginForm = () => {
               ))}
 
             {isTokenVerified && (
-              <FormTokenValidation status={isTokenVerified} />
+              <FormTokenValidation status={isTokenVerified as TokenStatus} />
             )}
             <Button className="w-full" type="submit">
               {isPending && <CgSpinner className="animate-spin h-5 w-5 mr-3" />}

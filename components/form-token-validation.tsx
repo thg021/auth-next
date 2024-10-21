@@ -1,7 +1,7 @@
 import { Cross1Icon, InfoCircledIcon, RocketIcon } from "@radix-ui/react-icons";
 
 type FormTokenValidationProps = {
-  status: "valid" | "invalid" | "error";
+  status: "valid" | "invalid" | "error" | null;
 };
 
 // TODO: melhorar este componente para fazer a validação do status
