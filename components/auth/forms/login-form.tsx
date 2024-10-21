@@ -23,12 +23,18 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { useSearchParams } from "next/navigation";
+import { FormTokenValidation } from "@/components/form-token-validation";
 
+type TokenStatus = "invalid" | "valid" | "error" | null;
 export const LoginForm = () => {
   const [statusMessage, setStatusMessage] = useState<StatusForm>({
     status: null,
   });
   const [isPending, startTransition] = useTransition();
+  const searchParams = useSearchParams();
+  const isTokenVerified: TokenStatus = searchParams.get("isTokenVerified");
+
   const form = useForm<LoginSchemaProps>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -98,6 +104,9 @@ export const LoginForm = () => {
                 <FormSuccess message={statusMessage.message} />
               ))}
 
+            {isTokenVerified && (
+              <FormTokenValidation status={isTokenVerified} />
+            )}
             <Button className="w-full" type="submit">
               {isPending && <CgSpinner className="animate-spin h-5 w-5 mr-3" />}
               Login

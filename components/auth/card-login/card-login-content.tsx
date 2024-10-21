@@ -1,10 +1,13 @@
 import { CardContent } from "@/components/ui/card";
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
-type CardLoginContentProps = {
+type CardLoginContentProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
 };
 
-export const CardLoginContent = ({ children }: CardLoginContentProps) => {
-  return <CardContent>{children}</CardContent>;
+export const CardLoginContent = ({
+  children,
+  ...rest
+}: CardLoginContentProps) => {
+  return <CardContent {...rest}>{children}</CardContent>;
 };
