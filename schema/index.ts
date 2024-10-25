@@ -17,12 +17,17 @@ export const ResetSchema = z.object({
 
 export type ResetSchemaProps = z.infer<typeof ResetSchema>;
 
-export const NewPasswordSchema = z.object({
-  password: z.string().min(8, "Senha deve ter no mínimo 8 caracteres."),
-  passwordConfirmation: z
-    .string()
-    .min(8, "Senha deve ter no mínimo 8 caracteres."),
-});
+export const NewPasswordSchema = z
+  .object({
+    password: z.string().min(8, "Senha deve ter no mínimo 8 caracteres."),
+    passwordConfirmation: z
+      .string()
+      .min(8, "Senha deve ter no mínimo 8 caracteres."),
+  })
+  .refine((data) => data.password === data.passwordConfirmation, {
+    message: "Senhas não conferem",
+    path: ["passwordConfirmation"],
+  });
 
 export type NewPasswordSchemaProps = z.infer<typeof NewPasswordSchema>;
 

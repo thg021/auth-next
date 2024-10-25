@@ -51,23 +51,19 @@ export const NewPasswordForm = () => {
 
   const onSubmit = useCallback(
     async (values: NewPasswordSchemaProps) => {
-      // if (!token) {
-      //   setStatusMessage({
-      //     status: "error",
-      //     message: "Token de verificação não encontrado",
-      //   });
-      //   return;
-      // }
       if (!userValidToken.email) return;
 
-      startTransition(() => {
-        changePassword({
+      startTransition(async () => {
+        const data = await changePassword({
           email: userValidToken.email!,
           password: values.password,
-        }).then((data) => setStatusMessage(data));
+        });
+
+        setStatusMessage(data);
+        if (data.status === "success") form.reset();
       });
     },
-    [userValidToken.email]
+    [form, userValidToken.email]
   );
 
   const validationToken = useCallback(async () => {

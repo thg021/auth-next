@@ -34,9 +34,9 @@ export const validationTokenPassword = async (token: string) => {
     result.email = existingUser.email;
     result.status = "valid";
 
-    // await db.passwordResetToken.delete({
-    //   where: { id: existingToken.id },
-    // });
+    await db.passwordResetToken.delete({
+      where: { id: existingToken.id },
+    });
 
     return result;
   } catch (err) {
