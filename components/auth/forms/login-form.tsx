@@ -32,6 +32,7 @@ export const LoginForm = () => {
   const [statusMessage, setStatusMessage] = useState<StatusForm>({
     status: null,
   });
+  const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const isTokenVerified = searchParams.get("isTokenVerified");
@@ -46,10 +47,27 @@ export const LoginForm = () => {
 
   const onSubmit = (values: LoginSchemaProps) => {
     startTransition(() => {
-      loginActions(values).then((data) => {
-        setStatusMessage(data);
-        //TODO: implementar 2FA
-      });
+      loginActions(values)
+        .then((data) => {
+          console.log("AQUIIIIIII", data);
+          setStatusMessage(data);
+          //TODO: implementar 2FA
+
+          if (data.status === "success" && data.twoFactor) {
+            setShowTwoFactor(true);
+            return;
+          }
+
+          form.reset();
+        })
+        .catch((error) => {
+          console.error(error);
+          setStatusMessage({
+            status: "error",
+            message: "Alguma coisa deu errado.",
+          });
+          form.reset();
+        });
     });
   };
 
@@ -61,44 +79,68 @@ export const LoginForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="flex flex-col space-y-2">
               <div className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="email@mail.com"
-                          type="email"
-                          disabled={isPending}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {showTwoFactor && (
+                  <FormField
+                    control={form.control}
+                    name="code"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Código</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="123456"
+                            type="text"
+                            disabled={isPending}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+                {!showTwoFactor && (
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="email@mail.com"
+                              type="email"
+                              disabled={isPending}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Senha</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="********"
-                          type="password"
-                          disabled={isPending}
-                        />
-                      </FormControl>
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Senha</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="********"
+                              type="password"
+                              disabled={isPending}
+                            />
+                          </FormControl>
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </>
+                )}
               </div>
               <Button
                 asChild
@@ -119,9 +161,14 @@ export const LoginForm = () => {
             {isTokenVerified && (
               <FormTokenValidation status={isTokenVerified as TokenStatus} />
             )}
-            <Button className="w-full" type="submit">
-              {isPending && <CgSpinner className="animate-spin h-5 w-5 mr-3" />}
-              Login
+            <Button className="w-full" type="submit" disabled={isPending}>
+              {isPending ? (
+                <CgSpinner className="animate-spin h-5 w-5 mr-3" />
+              ) : showTwoFactor ? (
+                "Confirmar"
+              ) : (
+                "Login"
+              )}
             </Button>
           </form>
         </Form>

@@ -3,6 +3,7 @@ import authConfig from "@/auth.config";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "@/lib/db";
 import { getUserById } from "@/services/user";
+import { getTwoFactorConfirmationByUserId } from "./services/two-factor-confirmation";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   debug: true,
@@ -28,6 +29,17 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (!existingUser || !existingUser.emailVerified) return false;
 
       // TODO: check 2FA here
+      if (existingUser.isTwoFactorEnabled) {
+        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
+          existingUser.id
+        );
+
+        if (!twoFactorConfirmation) return false;
+
+        await db.twoFactorConfirmation.delete({
+          where: { id: twoFactorConfirmation.id },
+        });
+      }
       return true;
     },
     async session({ token, session }) {
@@ -37,6 +49,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
       if (token.role && session.user) {
         session.user.role = token.role;
+      }
+
+      if (token.isTwoFactorEnabled && session.user) {
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled;
       }
       return session;
     },
@@ -49,6 +65,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (!existingUser) return token;
 
       token.role = existingUser.role;
+      token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
       return token;
     },
   },

@@ -5,6 +5,7 @@ export const LoginSchema = z.object({
     message: "Email é obrigatório",
   }),
   password: z.string().min(8, "Senha deve ter no mínimo 8 caracteres."),
+  code: z.optional(z.string()),
 });
 
 export type LoginSchemaProps = z.infer<typeof LoginSchema>;
