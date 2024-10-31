@@ -31,7 +31,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessionProvider session={session}>{children}</SessionProvider>
+        <SessionProvider session={session} refetchOnWindowFocus>
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );

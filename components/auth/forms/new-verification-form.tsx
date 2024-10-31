@@ -20,7 +20,6 @@ export const NewVerificationForm = () => {
   }, [token, router]);
 
   useEffect(() => {
-    console.log("Verification");
     onSubmit();
   }, [onSubmit]);
 

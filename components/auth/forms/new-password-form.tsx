@@ -69,7 +69,7 @@ export const NewPasswordForm = () => {
   const validationToken = useCallback(async () => {
     if (!token) return;
     const { status, email } = await validationTokenPassword(token || "");
-    console.log(status);
+
     if (status !== "valid") {
       const statusToken = await newVerification(token);
       router.push(`/auth/login?isTokenVerified=${statusToken}`);
@@ -83,7 +83,6 @@ export const NewPasswordForm = () => {
   }, [router, token]);
 
   useEffect(() => {
-    console.log("Verification");
     validationToken();
   }, [validationToken]);
 

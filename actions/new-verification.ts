@@ -6,7 +6,6 @@ import { getVerificationTokenByToken } from "@/services/verification-token";
 
 export const newVerification = async (token: string) => {
   try {
-    console.log("token new verification", token);
     const existingToken = await getVerificationTokenByToken(token);
 
     if (!existingToken) {

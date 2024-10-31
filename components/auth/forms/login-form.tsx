@@ -49,11 +49,11 @@ export const LoginForm = () => {
     startTransition(() => {
       loginActions(values)
         .then((data) => {
-          console.log("AQUIIIIIII", data);
-          setStatusMessage(data);
+          console.log(data);
+          //setStatusMessage(data);
           //TODO: implementar 2FA
 
-          if (data.status === "success" && data.twoFactor) {
+          if (data && data.status === "success" && data.twoFactor) {
             setShowTwoFactor(true);
             return;
           }
@@ -66,7 +66,6 @@ export const LoginForm = () => {
             status: "error",
             message: "Alguma coisa deu errado.",
           });
-          form.reset();
         });
     });
   };

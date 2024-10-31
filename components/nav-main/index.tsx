@@ -8,6 +8,7 @@ import {
   SidebarMenu,
 } from "@/components/ui/sidebar";
 import { NavItem } from "./nav-item";
+import { usePathname } from "next/navigation";
 
 type Items = {
   title: string;
@@ -23,12 +24,17 @@ type Item = {
 };
 
 export function NavMain({ items }: { items: Item[] }) {
+  const pathName = usePathname();
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         {map(items, (item) => (
-          <NavItem key={item.title} {...item} />
+          <NavItem
+            key={item.title}
+            {...item}
+            isItemActive={pathName === item.url}
+          />
         ))}
       </SidebarMenu>
     </SidebarGroup>

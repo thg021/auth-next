@@ -15,6 +15,7 @@ type NavItemProps = {
   url: string;
   icon?: LucideIcon;
   isActive?: boolean;
+  isItemActive: boolean;
   items?: Items[];
 };
 
@@ -23,6 +24,7 @@ export const NavItem = ({
   url,
   icon: Icon,
   isActive,
+  isItemActive,
   items,
 }: NavItemProps) => {
   return (
@@ -34,15 +36,16 @@ export const NavItem = ({
     >
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
-          <Link href={url} className="">
+          <Link href={url}>
             <SidebarMenuButton
               tooltip={title}
-              className="group-data-[state=collapsed]:mx-auto"
+              isActive={isItemActive}
+              className="group-data-[state=collapsed]:mx-auto data-[active=true]:font-bold data-[active=true]:text-emerald-500"
             >
               {Icon && <Icon />}
               <span>{title}</span>
               {size(items) > 0 && (
-                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 " />
+                <ChevronRight className=" ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 " />
               )}
             </SidebarMenuButton>
           </Link>

@@ -9,11 +9,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   debug: true,
   pages: {
     signIn: "/auth/login",
+    signOut: "/auth/login",
     error: "/auth/error",
   },
   events: {
     async linkAccount({ user }) {
-      console.log("Event", user);
       await db.user.update({
         where: { id: user.id },
         data: { emailVerified: new Date() },
@@ -57,7 +57,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return session;
     },
     async jwt({ token }) {
-      console.log(token);
       if (!token.sub) return token;
 
       const existingUser = await getUserById(token.sub);
