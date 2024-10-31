@@ -4,7 +4,7 @@ import { newVerification } from "@/actions/new-verification";
 import { CardLogin } from "@/components/auth/card-login";
 import { FormError } from "@/components/form-error";
 import { Spinner } from "@/components/spinner";
-import type { StatusForm } from "@/utils/statusForm.types";
+import type { FormStatusProps } from "@/utils/formStatus.type";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { BackButton } from "../back-button";
@@ -26,7 +26,7 @@ import { validationTokenPassword } from "@/actions/validation-token-password";
 import { changePassword } from "@/actions/change-password";
 
 export const NewPasswordForm = () => {
-  const [statusMessage, setStatusMessage] = useState<StatusForm>({
+  const [statusMessage, setStatusMessage] = useState<FormStatusProps>({
     status: null,
   });
   const [userValidToken, setUserValidToken] = useState<{

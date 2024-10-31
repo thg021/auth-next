@@ -12,12 +12,12 @@ import { LoginSchema, type LoginSchemaProps } from "@/schema";
 import { getTwoFactorConfirmationByUserId } from "@/services/two-factor-confirmation";
 import { getTwoFactorTokenByEmail } from "@/services/two-factor-token";
 import { getUserByEmail } from "@/services/user";
-import type { StatusForm } from "@/utils/statusForm.types";
+import type { FormStatusProps } from "@/utils/formStatus.type";
 import { AuthError } from "next-auth";
 
 export const loginActions = async (
   values: LoginSchemaProps
-): Promise<StatusForm> => {
+): Promise<FormStatusProps> => {
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success)

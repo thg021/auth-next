@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { CardLogin } from "@/components/auth/card-login";
 import { ResetSchema, type ResetSchemaProps } from "@/schema";
 
-import type { StatusForm } from "@/utils/statusForm.types";
+import type { FormStatusProps } from "@/utils/formStatus.type";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,7 +24,7 @@ import {
 import { resetActions } from "@/actions/reset";
 
 export const ResetForm = () => {
-  const [statusMessage, setStatusMessage] = useState<StatusForm>({
+  const [statusMessage, setStatusMessage] = useState<FormStatusProps>({
     status: null,
   });
   const [isPending, startTransition] = useTransition();

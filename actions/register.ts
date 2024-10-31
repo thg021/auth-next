@@ -1,7 +1,7 @@
 "use server";
 
 import { RegisterSchema, type RegisterSchemaProps } from "@/schema";
-import type { StatusForm } from "@/utils/statusForm.types";
+import type { FormStatusProps } from "@/utils/formStatus.type";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/services/user";
 import { generateVerificationToken } from "@/lib/tokens";
@@ -9,7 +9,7 @@ import { sendVerificationEmail } from "@/lib/mail";
 import { hashPassword } from "@/utils/hashPassword";
 export const registerActions = async (
   values: RegisterSchemaProps
-): Promise<StatusForm> => {
+): Promise<FormStatusProps> => {
   const validatedFields = RegisterSchema.safeParse(values);
 
   if (!validatedFields.success) {

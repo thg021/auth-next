@@ -16,14 +16,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import type { StatusForm } from "@/utils/statusForm.types";
+import type { FormStatusProps } from "@/utils/formStatus.type";
 import { registerActions } from "@/actions/register";
 import { Spinner } from "../../spinner";
 import { CardLogin } from "@/components/auth/card-login";
 import { BackButton } from "../back-button";
 
 export const RegisterForm = () => {
-  const [statusMessage, setStatusMessage] = useState<StatusForm>({
+  const [statusMessage, setStatusMessage] = useState<FormStatusProps>({
     status: null,
   });
   const [isPending, startTransition] = useTransition();

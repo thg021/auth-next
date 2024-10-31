@@ -2,7 +2,7 @@
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/services/user";
-import type { StatusForm } from "@/utils/statusForm.types";
+import type { FormStatusProps } from "@/utils/formStatus.type";
 
 type ChangePasswordProps = {
   email: string;
@@ -12,7 +12,7 @@ type ChangePasswordProps = {
 export const changePassword = async ({
   email,
   password,
-}: ChangePasswordProps): Promise<StatusForm> => {
+}: ChangePasswordProps): Promise<FormStatusProps> => {
   try {
     const existingUser = await getUserByEmail(email);
 

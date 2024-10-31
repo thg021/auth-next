@@ -4,11 +4,11 @@ import { sendPasswordResetEmail } from "@/lib/mail";
 import { generatePasswordResetToken } from "@/lib/tokens";
 import { ResetSchema, type ResetSchemaProps } from "@/schema";
 import { getUserByEmail } from "@/services/user";
-import type { StatusForm } from "@/utils/statusForm.types";
+import type { FormStatusProps } from "@/utils/formStatus.type";
 
 export const resetActions = async (
   values: ResetSchemaProps
-): Promise<StatusForm> => {
+): Promise<FormStatusProps> => {
   try {
     const validatedFields = ResetSchema.safeParse(values);
 

@@ -6,15 +6,14 @@ import { CardLogin } from "@/components/auth/card-login";
 import { LoginSchema, type LoginSchemaProps } from "@/schema";
 
 import { loginActions } from "@/actions/login";
-import type { StatusForm } from "@/utils/statusForm.types";
+import type { FormStatusProps } from "@/utils/formStatus.type";
 //import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BackButton } from "../back-button";
 import { CgSpinner } from "react-icons/cg";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
+
 import {
   Form,
   FormField,
@@ -26,10 +25,11 @@ import {
 import { useSearchParams } from "next/navigation";
 import { FormTokenValidation } from "@/components/form-token-validation";
 import Link from "next/link";
+import { FormStatus } from "@/components/form-message";
 
 type TokenStatus = "invalid" | "valid" | "error" | null;
 export const LoginForm = () => {
-  const [statusMessage, setStatusMessage] = useState<StatusForm>({
+  const [statusMessage, setStatusMessage] = useState<FormStatusProps>({
     status: null,
   });
   const [showTwoFactor, setShowTwoFactor] = useState(false);
@@ -49,15 +49,10 @@ export const LoginForm = () => {
     startTransition(() => {
       loginActions(values)
         .then((data) => {
-          console.log(data);
-          //setStatusMessage(data);
-          //TODO: implementar 2FA
-
           if (data && data.status === "success" && data.twoFactor) {
             setShowTwoFactor(true);
             return;
           }
-
           form.reset();
         })
         .catch((error) => {
@@ -150,12 +145,7 @@ export const LoginForm = () => {
                 <Link href="/auth/reset">esqueceu sua senha?</Link>
               </Button>
             </div>
-            {statusMessage &&
-              (statusMessage.status === "error" ? (
-                <FormError message={statusMessage.message} />
-              ) : (
-                <FormSuccess message={statusMessage.message} />
-              ))}
+            {statusMessage && <FormStatus {...statusMessage} />}
 
             {isTokenVerified && (
               <FormTokenValidation status={isTokenVerified as TokenStatus} />
