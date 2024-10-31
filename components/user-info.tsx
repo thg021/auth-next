@@ -9,7 +9,7 @@ type UserInfoProps = {
 
 export const UserInfo = ({ user, label }: UserInfoProps) => {
   return (
-    <Card className="w-[600px] shadow-sm">
+    <Card className="w-full lg:max-w-[600px] shadow-sm">
       <CardHeader>
         <p>{label}</p>
       </CardHeader>

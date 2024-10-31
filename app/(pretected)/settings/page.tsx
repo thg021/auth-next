@@ -7,7 +7,7 @@ export default function SettingsPage() {
   const user = useCurrentUser();
   console.log("MEU USARIOOOOOOOO", user);
   return (
-    <div className="mt-2">
+    <div className="w-full flex flex-col gap-6 justify-center items-center">
       <h1>Settngs</h1>
       <UserInfo label="Servidor" user={user} />
     </div>

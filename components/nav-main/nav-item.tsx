@@ -34,12 +34,15 @@ export const NavItem = ({
     >
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
-          <Link href={url}>
-            <SidebarMenuButton tooltip={title}>
+          <Link href={url} className="">
+            <SidebarMenuButton
+              tooltip={title}
+              className="group-data-[state=collapsed]:mx-auto"
+            >
               {Icon && <Icon />}
               <span>{title}</span>
               {size(items) > 0 && (
-                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 " />
               )}
             </SidebarMenuButton>
           </Link>
