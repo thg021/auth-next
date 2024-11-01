@@ -49,11 +49,16 @@ export const LoginForm = () => {
     startTransition(() => {
       loginActions(values)
         .then((data) => {
-          if (data && data.status === "success" && data.twoFactor) {
+          console.log(data);
+          if (data?.twoFactor && data.status === "success") {
             setShowTwoFactor(true);
             return;
           }
-          form.reset();
+
+          if (data?.status) {
+            setStatusMessage(data);
+          }
+          //form.reset();
         })
         .catch((error) => {
           console.error(error);
@@ -145,7 +150,7 @@ export const LoginForm = () => {
                 <Link href="/auth/reset">esqueceu sua senha?</Link>
               </Button>
             </div>
-            {statusMessage && <FormStatus {...statusMessage} />}
+            {statusMessage.status && <FormStatus {...statusMessage} />}
 
             {isTokenVerified && (
               <FormTokenValidation status={isTokenVerified as TokenStatus} />

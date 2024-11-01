@@ -55,7 +55,7 @@ const navMain = [
     title: "Servidor",
     url: "/server",
     icon: Bot,
-    items: [],
+    items: [{ title: "sub menu", url: "teste" }],
   },
 ];
 

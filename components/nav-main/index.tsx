@@ -26,8 +26,8 @@ type Item = {
 export function NavMain({ items }: { items: Item[] }) {
   const pathName = usePathname();
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+    <SidebarGroup className="p-0">
+      {/* <SidebarGroupLabel>Platform</SidebarGroupLabel> */}
       <SidebarMenu>
         {map(items, (item) => (
           <NavItem

@@ -11,10 +11,10 @@ export default async function ProtectedLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SidebarProvider>
+    <SidebarProvider open={false}>
       <AppSidebar />
       <SidebarInset>
-        <SidebarTrigger className="lg:-ml-3 z-50" />
+        <SidebarTrigger className="md:hidden lg:-ml-3 z-50" />
         <div className="w-full p-6">{children}</div>
       </SidebarInset>
     </SidebarProvider>

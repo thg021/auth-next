@@ -40,13 +40,15 @@ export const NavItem = ({
             <SidebarMenuButton
               tooltip={title}
               isActive={isItemActive}
-              className="group-data-[state=collapsed]:mx-auto data-[active=true]:font-bold data-[active=true]:text-emerald-500"
+              className="md:justify-center data-[active=true]:font-bold  data-[active=true]:bg-zinc-200 data-[active=true]:text-emerald-500"
             >
-              {Icon && <Icon />}
-              <span>{title}</span>
-              {size(items) > 0 && (
-                <ChevronRight className=" ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 " />
-              )}
+              {Icon && <Icon size={40} className="w-6 h-6" />}
+              <div className="w-full flex items-center md:hidden">
+                <span>{title}</span>
+                {size(items) > 0 && (
+                  <ChevronRight className=" ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 " />
+                )}
+              </div>
             </SidebarMenuButton>
           </Link>
         </CollapsibleTrigger>
